@@ -1,0 +1,8 @@
+.elements {
+  max-width: 1280px;
+  margin:0 200px 0 200px;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+}
+
