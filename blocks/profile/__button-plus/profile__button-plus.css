@@ -9,3 +9,12 @@
   border: white solid 2px;
 
 }
+
+@media screen and (max-width: 1100px) {
+  .profile__button-plus{
+    margin: 20px 0 0 0;
+
+
+  }
+}
+
