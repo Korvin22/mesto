@@ -1,3 +1,14 @@
 .profile__text {
   max-width:336px;
 }
+
+
+@media screen and (max-width:528px) {
+
+  .profile__text {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+}

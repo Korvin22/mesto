@@ -5,3 +5,10 @@
   padding: 25px 30px 51px 21px;
   align-items:center;
 }
+
+
+@media screen and (max-width:528px) {
+  .elements__description {
+    padding: 25px 15px 21px 31px;
+  }
+}

@@ -9,3 +9,14 @@
   margin-left:18px;
   border: white solid 2px;
 }
+
+
+@media screen and (max-width:528px) {
+  .profile__button-edit {
+    align-self:none;
+    height:18px;
+    width:18px;
+    margin-left:10px;
+
+  }
+}
