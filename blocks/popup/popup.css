@@ -1,30 +1,12 @@
 .popup {
+  background:rgba(0,0,0,0.5);
+  height:100%;
+  width:100%;
+  top:0;
+  left:0;
+  justify-content:center;
+  align-items:center;
   position:fixed;
-  top:195px;
-  left:auto;
-  width:430px;
-  height:330px;
-  background-color:white;
-  border-radius:25px;
-  margin-left:33.2%
-
-}
-
-@media screen and (max-width: 784px) {
-  .popup {
-    top:25%;
-    left:33%;
-    width: 382px;
-    height: 272px;
-  }
 }
 
 
-@media screen and (max-width:528px) {
-  .popup {
-    top:123px;
-    left:20%;
-    width: 282px;
-    height: 322px;
-  }
-}
