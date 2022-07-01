@@ -1,0 +1,26 @@
+.profile__open-popup {
+  background-image: url(../../../images/Vector\ \(2\).png);
+  height:24px;
+  width:24px;
+  background-color: black;
+  background-position: center;
+  background-repeat: no-repeat;
+  align-self:center;
+  margin-left:18px;
+  border: white solid 2px;
+}
+
+.profile__open-popup:hover {
+  opacity:0.6;
+}
+
+
+@media screen and (max-width:528px) {
+  .profile__open-popup {
+    align-self:none;
+    height:18px;
+    width:18px;
+    margin-left:10px;
+
+  }
+}

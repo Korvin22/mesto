@@ -7,3 +7,9 @@
 
 
 }
+
+@media screen and (max-width:784px) {
+  .popup__dedication {
+    margin-bottom:18px;
+  }
+}

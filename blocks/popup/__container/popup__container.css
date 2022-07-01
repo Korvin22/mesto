@@ -12,7 +12,7 @@
   .popup__container {
     width: 382px;
     height: 272px;
-    padding: 25px 22px 75px 22px;
+    padding: 10px 22px 25px 22px;
   }
 }
 
@@ -21,5 +21,6 @@
   .popup__container {
     width: 282px;
     height: 322px;
+    padding: 25px 22px 75px 22px;
   }
 }

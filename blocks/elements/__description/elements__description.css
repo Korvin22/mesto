@@ -4,6 +4,8 @@
   background-color: white;
   padding: 25px 30px 51px 21px;
   align-items:center;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 
