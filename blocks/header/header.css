@@ -4,8 +4,8 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  border-bottom:1px;
-  border-color:#545454;
+  border-bottom:1px solid;
+  border-color:rgba(84,84,84,0.7);
 }
 
 @media screen and (max-width: 984px) {

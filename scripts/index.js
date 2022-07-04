@@ -1,17 +1,28 @@
-console.log('hello, world!');
-
 const popupElement = document.querySelector('.popup');
 const popupCloseButtonElement = popupElement.querySelector('.popup__button-close');
 const popupOpenButtonElement = document.querySelector('.profile__open-popup');
-const popupSaveButtonElement = document.querySelector('.popup__button-save')
+// const popupSaveButtonElement = document.querySelector('.popup__button-save');
+
+// Находим форму в DOM
+let formElement = document.querySelector('.popup__form'); // Воспользуйтесь методом querySelector()
+// Находим поля формы в DOM
+let nameInput = formElement.querySelector('.popup__input_name');// Воспользуйтесь инструментом .querySelector()
+let jobInput = formElement.querySelector('.popup__input_job');// Воспользуйтесь инструментом .querySelector()
+nameInput.value = 'Жак-Ив Кусто';
+jobInput.value = 'Исследователь океана';
+
+// Получите значение полей jobInput и nameInput из свойства value
+// Выберите элементы, куда должны быть вставлены значения полей
+let profileTitle = document.querySelector('.profile__title');
+let profileSubtitle = document.querySelector('.profile__subtitle');
 
 const openPopupVisibility = function () {
-  popupElement.classList.add('popup_is-opened');
+  popupElement.classList.add('popup_opened');
 
 }
 
 const closePopupVisibility = function () {
-  popupElement.classList.remove('popup_is-opened');
+  popupElement.classList.remove('popup_opened');
 
 }
 
@@ -19,30 +30,19 @@ popupOpenButtonElement.addEventListener('click', openPopupVisibility);
 
 popupCloseButtonElement.addEventListener('click', closePopupVisibility);
 
-// Находим форму в DOM
-let formElement = document.querySelector('.popup__form'); // Воспользуйтесь методом querySelector()
-// Находим поля формы в DOM
-let nameInput = formElement.querySelector('.popup__name');// Воспользуйтесь инструментом .querySelector()
-let jobInput = formElement.querySelector('.popup__dedication');// Воспользуйтесь инструментом .querySelector()
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
-function formSubmitHandler (evt) {
-    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-                                                // Так мы можем определить свою логику отправки.
-                                                // О том, как это делать, расскажем позже.
+function formSubmitHandler(evt) {
+  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+  // Так мы можем определить свою логику отправки.
+  // О том, как это делать, расскажем позже.g
+  // Вставьте новые значения с помощью textContent
 
-    // Получите значение полей jobInput и nameInput из свойства value
-    // Выберите элементы, куда должны быть вставлены значения полей
-    let profileTitle = document.querySelector('.profile__title');
-    let profileSubtitle = document.querySelector('.profile__subtitle');
+  profileTitle.textContent = nameInput.value;
+  profileSubtitle.textContent = jobInput.value;
 
-    // Вставьте новые значения с помощью textContent
-
-    profileTitle.textContent = nameInput.value;
-    profileSubtitle.textContent = jobInput.value;
-
-    popupSaveButtonElement.addEventListener('click',closePopupVisibility);
+  //popupSaveButtonElement.addEventListener('click', closePopupVisibility);
 
 }
 

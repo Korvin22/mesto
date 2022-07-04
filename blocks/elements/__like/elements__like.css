@@ -3,9 +3,13 @@
   height:19px;
   width:22px;
   background-position: center;
+  border:none;
+  background-color: white;
+  outline: none;
 
 }
 
 .elements__like:hover {
   opacity:0.5;
+  cursor:pointer;
 }

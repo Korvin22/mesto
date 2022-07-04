@@ -1,17 +1,20 @@
 .profile__button-plus {
   margin-left: auto;
-  background-image: url(../../../images/plus.png);
+  background-image: url(../../../images/plus2.svg);
   height: 50px;
   width: 150px;
   background-color: black;
   background-position: center;
   background-repeat: no-repeat;
   border: white solid 2px;
+  outline:none;
+  border-radius: 2px solid;
 
 }
 
 .profile__button-plus:hover {
   opacity:0.6;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1100px) {
