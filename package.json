@@ -1,0 +1,37 @@
+
+
+{
+  "name": "mesto2",
+  "version": "1.0.0",
+  "description": "Одностраничный командный проект, состоящий из 4 блоков. Используется HTML, CSS и JS. В проекте используется абсолютное и относительное позиционирование, псевдоэлементы, флекс, грид, адаптивная верстка. Реализована форма, логика выполнена в JavaScript.  Структура файлов и путь к файлам организованы по БЭМ, организация файловой структуры - Nested.",
+  "main": "index.js",
+  "scripts": {
+    "build": "rimraf dist && webpack --mode=production",
+    "devserver": "webpack serve --mode=production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Korvin22/mesto2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Korvin22/mesto2/issues"
+  },
+  "homepage": "https://github.com/Korvin22/mesto2#readme",
+  "devDependencies": {
+    "@babel/core": "^7.18.13",
+    "@babel/preset-env": "^7.18.10",
+    "autoprefixer": "^10.4.8",
+    "babel-loader": "^8.2.5",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.7.1",
+    "cssnano": "^5.1.13",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.1",
+    "postcss-loader": "^7.0.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.10.1"
+  }
+}
