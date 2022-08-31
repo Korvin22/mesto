@@ -1,4 +1,4 @@
-import '../pages/index.css';
+import "../pages/index.css";
 import {
   selectors,
   formAdd,
@@ -60,19 +60,16 @@ const buttonSubmitAddCard = popupAddCard.querySelector(".popup__button-save");
   return popupElement;
 });*/
 
-const classPopupEdit = new PopupWithForm(
-  ".popup-edit",
-  handleSubmitButtonFormEdit
-);
-const classPopupAddCard = new PopupWithForm(".popup-plus", renderCard);
+
+
 const classPopupImage = new PopupWithImage(".popup-image");
 const classUserInfo = new UserInfo(
   ".popup__input_type_name",
   ".popup__input_type_job"
 );
 
-classPopupEdit.setEventListeners();
-classPopupAddCard.setEventListeners();
+
+
 classPopupImage.setEventListeners();
 // Находим форму в DOM
 const formEdit = document.querySelector(".popup__form_edit");
@@ -95,13 +92,11 @@ function closePopup(popup) {
 }*/
 
 buttonOpenPopupEditProfile.addEventListener("click", () => {
-  classPopupEdit.openPopup();
+
   classUserInfo.getUserInfo();
 });
 
-buttonOpenPopupAddCard.addEventListener("click", function () {
-  classPopupAddCard.openPopup();
-});
+
 
 const inputTitle = formAddCard.querySelector(selectors.inputTitle);
 const inputReference = formAddCard.querySelector(selectors.inputReference);
@@ -111,7 +106,7 @@ const template = document
   .querySelector(selectors.template)
   .content.querySelector(selectors.element);
 
-function handleSubmitButtonFormEdit(evt) {
+/*function handleSubmitButtonFormEdit(evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
   // Так мы можем определить свою логику отправки.
   // О том, как это делать, расскажем позже.g
@@ -119,7 +114,7 @@ function handleSubmitButtonFormEdit(evt) {
   classUserInfo.setUserInfo();
   classPopupEdit.closePopup();
   //popupSaveButtonElement.addEventListener('click', closePopupVisibility);
-}
+}*/
 
 export function handleCardClick({ name, link }) {
   classPopupImage.openPopup({ name, link });
@@ -169,7 +164,7 @@ formProfile.enableValidation();
 const formCard = new FormValidator(formAdd, formAddCard);
 formCard.enableValidation();
 
-function renderCard(evt) {
+/*function renderCard(evt) {
   evt.preventDefault();
   const cardElement = createCard({
     name: inputTitle.value,
@@ -179,4 +174,19 @@ function renderCard(evt) {
   formAddCard.reset();
   classPopupAddCard.closePopup();
   formCard.setDisabledState();
-}
+}*/
+const classPopupAddCard = new PopupWithForm(
+  ".popup-plus",
+  ( (formData) => {
+    const cardElement = createCard({name:formData.title, link:formData.reference});
+    section.addItem(cardElement);
+    formAddCard.reset();
+    classPopupAddCard.closePopup();
+    formCard.setDisabledState();
+  })
+);
+classPopupAddCard.setEventListeners();
+
+buttonOpenPopupAddCard.addEventListener("click", function () {
+  classPopupAddCard.openPopup();
+});
