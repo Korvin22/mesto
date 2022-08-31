@@ -12,16 +12,7 @@ const selectors = {
   popup__caption: ".popup__caption",
 };
 
-const formAdd = {
-  form: ".popup__form_plus",
-  button: ".popup__button-save",
-  inactiveButton: "popup__button-save_disabled",
-  activeButton: "popup__button-save_abled",
-  input: "popup__input",
-};
-
-const formEditProfile = {
-  form: ".popup__form_edit",
+const formAddEdit = {
   button: ".popup__button-save",
   inactiveButton: "popup__button-save_disabled",
   activeButton: "popup__button-save_abled",
@@ -55,4 +46,4 @@ const initialCards = [
   },
 ];
 
-export { selectors, formAdd, formEditProfile, initialCards };
+export { selectors, formAddEdit, initialCards };

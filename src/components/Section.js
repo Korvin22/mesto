@@ -3,10 +3,11 @@ export class Section {
     this._items = items;
     this.renderer = renderer;
     this.containerSelector = containerSelector;
+    this.Container = document.querySelector(this.containerSelector);
   }
 
   addItem(cardElement) {
-    document.querySelector(this.containerSelector).prepend(cardElement);
+    this.Container.prepend(cardElement);
 
   }
 

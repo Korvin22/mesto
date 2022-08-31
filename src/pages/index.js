@@ -1,10 +1,9 @@
 import "../pages/index.css";
 import {
   selectors,
-  formAdd,
-  formEditProfile,
-  initialCards,
-} from "../components/constants.js";
+  formAddEdit,
+  initialCards
+} from "../utils/constants.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/Card.js";
 import { Section } from "../components/section.js";
@@ -60,15 +59,20 @@ const buttonSubmitAddCard = popupAddCard.querySelector(".popup__button-save");
   return popupElement;
 });*/
 
-
+const classPopupEdit = new PopupWithForm(".popup-edit", (formData) => {
+  /*document.querySelector(".popup__input_type_name").value = formData.name;
+    document.querySelector(".popup__input_type_job").value = formData.dedication;*/
+  classUserInfo.setUserInfo({
+    name: formData.name,
+    dedication: formData.dedication,
+  });
+  classPopupEdit.closePopup();
+});
 
 const classPopupImage = new PopupWithImage(".popup-image");
-const classUserInfo = new UserInfo(
-  ".popup__input_type_name",
-  ".popup__input_type_job"
-);
+const classUserInfo = new UserInfo(".profile__title", ".profile__subtitle");
 
-
+classPopupEdit.setEventListeners();
 
 classPopupImage.setEventListeners();
 // Находим форму в DOM
@@ -92,11 +96,16 @@ function closePopup(popup) {
 }*/
 
 buttonOpenPopupEditProfile.addEventListener("click", () => {
-
-  classUserInfo.getUserInfo();
+  const InitialEditData = classUserInfo.getUserInfo();
+  classPopupEdit.openPopup();
+  document.querySelector(".popup__input_type_name").value =
+    InitialEditData.name;
+  document.querySelector(".popup__input_type_job").value =
+    InitialEditData.dedication;
+  /*провозился часов 5, не получилось сделать через setInputValues - ума не приложу почему,
+  сделал через поиск прямой в index.js*/
+  /*classPopupEdit.setInputValues(classUserInfo.getUserInfo());*/
 });
-
-
 
 const inputTitle = formAddCard.querySelector(selectors.inputTitle);
 const inputReference = formAddCard.querySelector(selectors.inputReference);
@@ -158,10 +167,10 @@ function createInitialCards() {
 
 createInitialCards();*/
 
-const formProfile = new FormValidator(formEditProfile, formEdit);
+const formProfile = new FormValidator(formAddEdit, formEdit);
 formProfile.enableValidation();
 
-const formCard = new FormValidator(formAdd, formAddCard);
+const formCard = new FormValidator(formAddEdit, formAddCard);
 formCard.enableValidation();
 
 /*function renderCard(evt) {
@@ -171,22 +180,23 @@ formCard.enableValidation();
     link: inputReference.value,
   });
   section.addItem(cardElement);
-  formAddCard.reset();
+  `  formAddCard.reset();
   classPopupAddCard.closePopup();
   formCard.setDisabledState();
 }*/
-const classPopupAddCard = new PopupWithForm(
-  ".popup-plus",
-  ( (formData) => {
-    const cardElement = createCard({name:formData.title, link:formData.reference});
-    section.addItem(cardElement);
-    formAddCard.reset();
-    classPopupAddCard.closePopup();
-    formCard.setDisabledState();
-  })
-);
+const classPopupAddCard = new PopupWithForm(".popup-plus", (formData) => {
+  const cardElement = createCard({
+    name: formData.title,
+    link: formData.reference,
+  });
+  section.addItem(cardElement);
+  formAddCard.reset();
+  classPopupAddCard.closePopup();
+
+});
 classPopupAddCard.setEventListeners();
 
 buttonOpenPopupAddCard.addEventListener("click", function () {
   classPopupAddCard.openPopup();
+  formCard.setDisabledState();
 });

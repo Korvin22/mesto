@@ -1,4 +1,4 @@
-import { selectors } from "./constants.js";
+import { selectors } from "../utils/constants.js";
 
 /* const selectors = {
     inputTitle: ".popup__input_type_title",
