@@ -1,19 +1,5 @@
 import { selectors } from "../utils/constants.js";
 
-/* const selectors = {
-    inputTitle: ".popup__input_type_title",
-    inputReference: ".popup__input_type_reference",
-    elements: ".elements",
-    template: ".element-template",
-    element: ".elements__element",
-    element__title: ".elements__title",
-    elements__picture: ".elements__picture",
-    trash: ".elements__trash",
-    like: ".elements__like",
-    popup__picture: ".popup__picture",
-    popup__caption: ".popup__caption",
-  };*/
-
 export class Card {
   constructor(data, selector, handleCardClick) {
     this._name = data.name;
@@ -69,33 +55,3 @@ export class Card {
   }
 }
 
-/*function createCard({ name, reference }) {
-  const cardElement = template.cloneNode(true);
-  const cardPicture = cardElement.querySelector(selectors.elements__picture);
-  cardElement.querySelector(selectors.element__title).textContent = name;
-  cardPicture.alt = name;
-  cardPicture.src = reference;
-
-  return cardElement;
-}
-
-function renderCard({ name, reference }, cardsContainer) {
-  // Создаем карточку на основе данных
-  const cardElement = createCard({ name, reference });
-  // Помещаем ее в контейнер карточек
-  cardsContainer.prepend(cardElement);
-}
-
-formAddCard.addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  renderCard(
-    { name: inputTitle.value, reference: inputReference.value },
-    cardsContainer
-  );
-  formAddCard.reset();
-  closePopup(popupAddCard);
-  setDisabledState(buttonSubmitAddCard, formAdd);
-});
-
-*/
