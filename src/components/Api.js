@@ -12,4 +12,13 @@ export class Api {
       return res.json();
     });
   }
+
+  getInitialCard() {
+    return fetch(`${this._address}/cards `, {
+      method: "GET",
+      headers: this._headers,
+    }).then((res)=>{
+      return res.json();
+    });
+  }
 }

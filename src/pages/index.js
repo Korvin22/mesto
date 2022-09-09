@@ -24,7 +24,11 @@ const classPopupEdit = new PopupWithForm(".popup-edit", (formData) => {
 });
 
 const classPopupImage = new PopupWithImage(".popup-image");
-const classUserInfo = new UserInfo(".profile__title", ".profile__subtitle", ".profile__image");
+const classUserInfo = new UserInfo(
+  ".profile__title",
+  ".profile__subtitle",
+  ".profile__image"
+);
 
 classPopupEdit.setEventListeners();
 
@@ -59,19 +63,6 @@ function createCard({ name, link }) {
   return cardElement;
 }
 
-const section = new Section(
-  {
-    items: initialCards,
-    renderer: ({ name, link }) => {
-      const cardElement = createCard({ name, link });
-      section.addItem(cardElement);
-    },
-  },
-  selectors.elements
-);
-
-section.renderInitialItems();
-
 const formProfile = new FormValidator(formAddEdit, formEdit);
 formProfile.enableValidation();
 
@@ -101,12 +92,30 @@ const api = new Api({
   },
 });
 
-api.getUserInfo();
-
 api
   .getUserInfo()
   .then((res) => {
-    console.log(res);
-    classUserInfo.setUserInfo({name:res.name,dedication:res.about,avatar:res.avatar});
+    classUserInfo.setUserInfo({
+      name: res.name,
+      dedication: res.about,
+      avatar: res.avatar,
+    });
   })
   .catch((error) => console.log(`Ошибка: ${error}`));
+
+api
+  .getInitialCard()
+  .then((res) => {
+    const section = new Section(
+      {
+        items: res,
+        renderer: ({ name, link }) => {
+          const cardElement = createCard({ name, link });
+          section.addItem(cardElement);
+        },
+      },
+      selectors.elements
+    );
+
+    section.renderInitialItems();
+  });
