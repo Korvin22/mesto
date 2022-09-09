@@ -1,15 +1,13 @@
 import "../pages/index.css";
-import {
-  selectors,
-  formAddEdit,
-  initialCards
-} from "../utils/constants.js";
+import { selectors, formAddEdit, initialCards } from "../utils/constants.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/Card.js";
 import { Section } from "../components/section.js";
 import { PopupWithImage } from "../components/popupWithImage.js";
 import { PopupWithForm } from "../components/popupWithForm.js";
 import { UserInfo } from "../components/userInfo.js";
+
+import { Api } from "../components/Api";
 
 //кнопки открытия попапов
 const buttonOpenPopupEditProfile = document.querySelector(
@@ -18,7 +16,6 @@ const buttonOpenPopupEditProfile = document.querySelector(
 const buttonOpenPopupAddCard = document.querySelector(".profile__button-plus");
 
 const classPopupEdit = new PopupWithForm(".popup-edit", (formData) => {
-
   classUserInfo.setUserInfo({
     name: formData.name,
     dedication: formData.dedication,
@@ -27,7 +24,7 @@ const classPopupEdit = new PopupWithForm(".popup-edit", (formData) => {
 });
 
 const classPopupImage = new PopupWithImage(".popup-image");
-const classUserInfo = new UserInfo(".profile__title", ".profile__subtitle");
+const classUserInfo = new UserInfo(".profile__title", ".profile__subtitle", ".profile__image");
 
 classPopupEdit.setEventListeners();
 
@@ -88,7 +85,6 @@ const classPopupAddCard = new PopupWithForm(".popup-plus", (formData) => {
   });
   section.addItem(cardElement);
   classPopupAddCard.closePopup();
-
 });
 classPopupAddCard.setEventListeners();
 
@@ -96,3 +92,21 @@ buttonOpenPopupAddCard.addEventListener("click", function () {
   classPopupAddCard.openPopup();
   formCard.setDisabledState();
 });
+
+const api = new Api({
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-50",
+  headers: {
+    authorization: "230562f7-78ba-48ea-b99f-12e65ef62aec",
+    "Content-Type": "application/json",
+  },
+});
+
+api.getUserInfo();
+
+api
+  .getUserInfo()
+  .then((res) => {
+    console.log(res);
+    classUserInfo.setUserInfo({name:res.name,dedication:res.about,avatar:res.avatar});
+  })
+  .catch((error) => console.log(`Ошибка: ${error}`));
