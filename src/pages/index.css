@@ -47,7 +47,7 @@
 @import url(../blocks/popup-image/popup-image.css);
 @import url(../blocks/popup/__button-save/_disabled/popup__button-save_disabled.css);
 @import url(../blocks/popup/__button-save/_disabled/popup__button-save_abled.css);
-@import url(../blocks/popup/__container/_delete/popup__container_delete.css);
+@import url(../blocks/popup/__container/_delete/popup__container-delete.css);
 @import url(../blocks/popup/__button-delete/popup__button-delete.css);
 
 @import url(../blocks/error/error.css);
