@@ -1,18 +1,23 @@
 .profile__image {
   object-fit: cover;
-  height:120px;
-  width:120px;
+  height: 120px;
+  width: 120px;
   border-radius: 100%;
-  margin-right:30px;
-
+  margin-right: 30px;
+  display: block;
 }
 
-@media screen and (max-width:528px) {
+.profile__image:hover {
+  opacity: 0.1;
+}
 
+.profile__image:hover::after {
+  background-image: url(../../../images/pen.svg);
+}
+
+@media screen and (max-width: 528px) {
   .profile__image {
-    margin-right:0;
-    margin-bottom:22.25px;
-
+    margin-right: 0;
+    margin-bottom: 22.25px;
   }
-
 }

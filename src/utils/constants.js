@@ -47,3 +47,12 @@ const initialCards = [
 ];
 
 export { selectors, formAddEdit, initialCards };
+
+export function addSpinner(elem) {
+  elem.textContent = "Сохранение...";
+
+}
+
+export function removeSpinner(elem) {
+  elem.textContent = "Сохранить";
+}

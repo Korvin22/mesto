@@ -1,5 +1,5 @@
 import "../pages/index.css";
-import { selectors, formAddEdit, initialCards } from "../utils/constants.js";
+import { selectors, formAddEdit, initialCards, addSpinner, removeSpinner } from "../utils/constants.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/Card.js";
 import { Section } from "../components/section.js";
@@ -26,6 +26,7 @@ buttonOpenPopupAvatar.addEventListener("click", () => {
 });
 
 const classPopupEdit = new PopupWithForm(".popup-edit", (formData) => {
+
   classUserInfo.setUserInfo({
     name: formData.name,
     dedication: formData.dedication,
@@ -41,7 +42,10 @@ const classUserInfo = new UserInfo(
 );
 const classPopupAvatar = new PopupWithForm(".popup-avatar", (formData) => {
   api.changeAvatar(formData).then((res) => {
+    addSpinner(document.querySelector('.popup__button-save'));
     return classUserInfo.setAvatar(formData.reference);
+  }).finally(()=>{
+    removeSpinner(document.querySelector('.popup__button-save'));
   });
   classPopupAvatar.closePopup();
 });
@@ -50,11 +54,9 @@ console.log(classPopupAvatar);
 const formAvatar = new FormValidator(formAddEdit, formAvatar1);
 formAvatar.enableValidation();
 
-
 classPopupEdit.setEventListeners();
 
 classPopupImage.setEventListeners();
-
 
 buttonOpenPopupEditProfile.addEventListener("click", () => {
   classPopupEdit.openPopup();
