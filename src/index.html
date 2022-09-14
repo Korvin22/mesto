@@ -64,7 +64,7 @@
         <button class="popup__button-save popup__button-save_disabled" type="submit" disabled>Сохранить</button>
       </form>
     </div>
-  \</section>
+  </section>
 
   <section class="popup popup-image">
     <div class="popup-image__container">
@@ -74,13 +74,37 @@
     </div>
   </section>
 
+  <section class="popup popup-delete">
+    <div class="popup__container_delete">
+      <button class="popup__button-close" type="button"></button>
+      <h2 class="popup__title">Вы уверены?</h2>
+      <button class="popup__button-delete" type="submit">Да</button>
+    </div>
+  </section>
+
+  <section class="popup popup-avatar">
+    <div class="popup__container">
+      <button class="popup__button-close" type="button"></button>
+      <h2 class="popup__title">Обновить аватар</h2>
+      <form class="popup__form popup__form_avatar" name="title-and-reference" novalidate>
+        <input required type="url" name="reference" class="popup__input popup__input_type_reference"
+          placeholder="Ссылка" id="reference">
+        <span class='error reference-error'></span>
+        <button class="popup__button-save popup__button-save_disabled" type="submit" disabled>Сохранить</button>
+      </form>
+    </div>
+  </section>
+
   <template class="element-template">
     <div class="elements__element">
       <img src="#" alt="#" class="elements__picture">
       <button class="elements__trash" type="button"></button>
       <div class="elements__description">
         <h2 class="elements__title"></h2>
-        <button class="elements__like" type="button"></button>
+        <div class="elements__likes">
+          <button class="elements__like" type="button"></button>
+          <p class="elements__like-counter">0</p>
+        </div>
       </div>
     </div>
   </template>
