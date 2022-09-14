@@ -7,13 +7,6 @@
   display: block;
 }
 
-.profile__image:hover {
-  opacity: 0.1;
-}
-
-.profile__image:hover::after {
-  background-image: url(../../../images/pen.svg);
-}
 
 @media screen and (max-width: 528px) {
   .profile__image {
