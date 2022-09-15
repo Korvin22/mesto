@@ -1,4 +1,3 @@
-import { Popup } from "./popup.js";
 import { PopupWithForm } from "./PopupWithForm.js";
 
 export class PopupWithFormSubmit extends PopupWithForm {

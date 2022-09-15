@@ -4,26 +4,29 @@ export class Api {
     this._headers = settings.headers;
   }
 
+  _getResponseData(res) {
+    if (!res.ok) {
+      return Promise.reject(`Ошибка: ${res.status}`);
+    }
+    return res.json();
+  }
+
   getUserInfo() {
     return fetch(`${this._address}/users/me `, {
       method: "GET",
       headers: this._headers,
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+    }).then((res) => {
+      return this._getResponseData(res);
+    });
   }
 
   getInitialCard() {
     return fetch(`${this._address}/cards `, {
       method: "GET",
       headers: this._headers,
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+    }).then((res) => {
+      return this._getResponseData(res);
+    });
   }
   editProfile(newName, newAbout) {
     return fetch(`${this._address}/users/me`, {
@@ -33,11 +36,9 @@ export class Api {
         name: newName,
         about: newAbout,
       }),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+    }).then((res) => {
+      return this._getResponseData(res);
+    });
   }
   addCard(newName, newLink, newLike) {
     return fetch(`${this._address}/cards`, {
@@ -48,11 +49,9 @@ export class Api {
         link: newLink,
         likes: newLike,
       }),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+    }).then((res) => {
+      return this._getResponseData(res);
+    });
   }
 
   getLikes() {
@@ -61,45 +60,38 @@ export class Api {
       headers: this._headers,
     })
       .then((res) => {
-        return res.json();
+        return this._getResponseData(res);
       })
       .then((data) => {
         console.log(data);
         document.querySelector(".elements__like-counter").textContent =
           data.likes.length;
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+      });
   }
   deleteCard(id) {
     return fetch(`${this._address}/cards/${id}`, {
       method: "DELETE",
       headers: this._headers,
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+    }).then((res) => {
+      return this._getResponseData(res);
+    });
   }
 
   addLike(id) {
     return fetch(`${this._address}/cards/${id}/likes`, {
       method: "PUT",
       headers: this._headers,
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+    }).then((res) => {
+      return this._getResponseData(res);
+    });
   }
   deleteLike(id) {
     return fetch(`${this._address}/cards/${id}/likes`, {
       method: "DELETE",
       headers: this._headers,
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+    }).then((res) => {
+      return this._getResponseData(res);
+    });
   }
 
   changeAvatar(data) {
@@ -109,12 +101,8 @@ export class Api {
       body: JSON.stringify({
         avatar: data.reference,
       }),
-    })
-      .then((res) => {
-        res.json();
-        console.log(res)
-      })
-      .catch((error) => console.log(`Ошибка: ${error}`));
+    }).then((res) => {
+      return this._getResponseData(res);
+    });
   }
-
 }

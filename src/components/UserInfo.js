@@ -10,20 +10,22 @@ export class UserInfo {
 
   getUserInfo() {
     return {
-      name:this.profileTitle.textContent,
-      dedication: this.profileSubtitle.textContent
-    }
-
+      name: this.profileTitle.textContent,
+      dedication: this.profileSubtitle.textContent,
+      avatar: this.profileAvatar.src
+    };
   }
 
-  setUserInfo({name,dedication}) {
+  getUserId(data) {
+    return data._id
+  }
+
+  setUserInfo({ name, dedication }) {
     this.profileTitle.textContent = name;
     this.profileSubtitle.textContent = dedication;
-
-
   }
 
-setAvatar(avatar){
-  this.profileAvatar.src=avatar;
-}
+  setAvatar(avatar) {
+    this.profileAvatar.src = avatar;
+  }
 }

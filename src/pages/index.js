@@ -8,13 +8,14 @@ import {
 } from "../utils/constants.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/Card.js";
-import { Section } from "../components/section.js";
-import { PopupWithImage } from "../components/popupWithImage.js";
-import { PopupWithForm } from "../components/popupWithForm.js";
-import { UserInfo } from "../components/userInfo.js";
+import { Section } from "../components/Section.js";
+import { PopupWithImage } from "../components/PopupWithImage.js";
+import { PopupWithForm } from "../components/PopupWithForm.js";
+import { UserInfo } from "../components/UserInfo.js";
 import { Api } from "../components/Api";
 import { Popup } from "../components/Popup";
 
+let user_id;
 //кнопки открытия попапов
 const buttonOpenPopupEditProfile = document.querySelector(
   ".profile__open-popup"
@@ -54,7 +55,7 @@ const classPopupAvatar = new PopupWithForm(".popup-avatar", (formData) => {
   classPopupAvatar.closePopup();
 });
 classPopupAvatar.setEventListeners();
-console.log(classPopupAvatar);
+
 const formAvatar = new FormValidator(formAddEdit, formAvatar1);
 formAvatar.enableValidation();
 
@@ -77,7 +78,7 @@ function createCard({ name, link, likes, _id }) {
     { name, link, likes, _id },
     selectors.template,
     handleCardClick,
-    function handleTrashButton() {
+    function handleTrashButtonClick() {
       const classPopupDelete = new Popup(".popup-delete");
       classPopupDelete.setEventListeners();
       classPopupDelete.openPopup();
@@ -88,7 +89,7 @@ function createCard({ name, link, likes, _id }) {
           classPopupDelete.closePopup();
         });
     },
-    function handleLikeButton() {
+    function handleLikeButtonClick() {
       if (!this._buttonLike.classList.contains("elements__like_active")) {
         api.deleteLike(_id).then((res) => {
           console.log(res.likes);
@@ -96,18 +97,27 @@ function createCard({ name, link, likes, _id }) {
         });
       } else
         api.addLike(_id).then((res) => {
-          console.log(res.likes);
           return card.setLikesInfo(res.likes);
         });
-    }
+    }, user_id
   );
 
   const cardElement = card.createCard();
-  if (_id !== "6c6ec11c937d29a913374b47") {
-    cardElement.querySelector(".elements__trash").remove();
-  }
+
   return cardElement;
 }
+
+const section = new Section(
+  {
+    renderer: ({ name, link, likes, _id }) => {
+      /*if (res.map((item) => item.owner._id) !== "111") {*/
+
+      const cardElement = createCard({ name, link, likes, _id });
+      section.addItem(cardElement);
+    },
+  },
+  selectors.elements
+);
 
 const formProfile = new FormValidator(formAddEdit, formEdit);
 formProfile.enableValidation();
@@ -123,41 +133,45 @@ const api = new Api({
   },
 });
 
-api
+
+/*Подготовка к отрисовке начального состояния: @userData и @InitialCards*/
+const userData = api
   .getUserInfo()
   .then((res) => {
-    classUserInfo.setUserInfo({
+    const data = classUserInfo.getUserInfo({
       name: res.name,
-      dedication: res.about,
+      dedication: res.dedication,
+      avatar: res.avatar,
     });
+    classUserInfo.getUserId(res);
+    return {
+      user_id: classUserInfo.getUserId(res),
+      name: data.name,
+      dedication: data.dedication,
+      avatar: data.avatar,
+    };
   })
   .catch((error) => console.log(`Ошибка: ${error}`));
-
-api
-  .getInitialCard()
-  .then((res) => {
-    /*console.log(res.map((item) => item.owner._id));*/
-    console.log(res);
-    const section = new Section(
-      {
-        items: res,
-        renderer: ({ name, link, likes, _id }) => {
-          /*if (res.map((item) => item.owner._id) !== "111") {*/
-
-          const cardElement = createCard({ name, link, likes, _id });
-          section.addItem(cardElement);
-        },
-      },
-      selectors.elements
-    );
-    section.renderInitialItems();
-    /*if (res.owner._id !== '111'){
-    section.renderInitialItems();
-    document.querySelectorAll('.elements__trash');}*/
-
-    /*if (res.owner._id !== '6c6ec11c937d29a913374b47')*/
+const InitialCards = api
+  .getInitialCard().then((res)=>{
+    return res
   })
   .catch((error) => console.log(`Ошибка: ${error}`));
+/*Отрисовка начального состояния через Promise.all*/
+Promise.all([userData, InitialCards])
+  .then(([userData, InitialCards]) => {
+    user_id = userData.user_id;
+    console.log(InitialCards);
+    classUserInfo.setUserInfo({
+      name: userData.name,
+      dedication: userData.dedication,
+    });
+    classUserInfo.setAvatar(userData.avatar);
+    /*if (InitialCards.map((item) => item._id) !== user_id)*/
+    section.renderInitialItems(InitialCards);
+
+  })
+  .catch((err) => console.log(err));
 
 api
   .editProfile("Marie Skłodowska Curie", "ученый")

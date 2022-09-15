@@ -1,4 +1,4 @@
-import { Popup } from "./popup.js";
+import { Popup } from "./Popup.js";
 import { selectors } from "../utils/constants.js";
 
 export class PopupWithImage extends Popup {
