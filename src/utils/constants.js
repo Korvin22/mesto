@@ -1,3 +1,14 @@
+//кнопки открытия попапов
+const buttonOpenPopupEditProfile = document.querySelector(
+  ".profile__open-popup"
+);
+const buttonOpenPopupAddCard = document.querySelector(".profile__button-plus");
+// Находим форму в DOM
+const formEdit = document.querySelector(".popup__form_edit");
+const formAddCard = document.querySelector(".popup__form_plus");
+const formAvatar1 = document.querySelector(".popup__form_avatar");
+const buttonOpenPopupAvatar = document.querySelector(".profile__image");
+
 const selectors = {
   inputTitle: ".popup__input_type_title",
   inputReference: ".popup__input_type_reference",
@@ -46,11 +57,20 @@ const initialCards = [
   },
 ];
 
-export { selectors, formAddEdit, initialCards };
+export {
+  selectors,
+  formAddEdit,
+  initialCards,
+  buttonOpenPopupEditProfile,
+  buttonOpenPopupAddCard,
+  formEdit,
+  formAddCard,
+  formAvatar1,
+  buttonOpenPopupAvatar,
+};
 
 export function addSpinner(elem) {
   elem.textContent = "Сохранение...";
-
 }
 
 export function removeSpinner(elem) {

@@ -2,14 +2,14 @@ export class FormValidator {
   constructor(config, form) {
     this._config = config;
     this._form = form;
-    this._selectorButton = this._config.button;
-    this._input = this._config.input;
-    this._inactiveButton = this._config.inactiveButton;
-    this._activeButton = this._config.activeButton;
+    this._selectorButtonSelector = this._config.button;
+    this._inputSelector = this._config.input;
+    this._inactiveButtonSelector = this._config.inactiveButton;
+    this._activeButtonSelector = this._config.activeButton;
   }
 
   enableValidation() {
-    this._button = this._form.querySelector(this._selectorButton);
+    this._button = this._form.querySelector(this._selectorButtonSelector);
     this._form.addEventListener("input", (event) =>
       this._handleFormInput(event, this._button)
     );
@@ -23,8 +23,8 @@ export class FormValidator {
 
   setDisabledState() {
     this._button.setAttribute("disabled", true);
-    this._button.classList.add(this._inactiveButton);
-    this._button.classList.remove(this._activeButton);
+    this._button.classList.add(this._inactiveButtonSelector);
+    this._button.classList.remove(this._activeButtonSelector);
   }
 
   _showFieldError(input) {
@@ -35,8 +35,8 @@ export class FormValidator {
   _setSubmitButtonState() {
     const isValid = this._form.checkValidity();
     if (isValid) {
-      this._button.classList.remove(this._inactiveButton);
-      this._button.classList.add(this._activeButton);
+      this._button.classList.remove(this._inactiveButtonSelector);
+      this._button.classList.add(this._activeButtonSelector);
       this._button.removeAttribute("disabled", "");
     } else {
       this.setDisabledState();

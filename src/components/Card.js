@@ -7,12 +7,14 @@ export class Card {
     handleCardClick,
     handleTrashButtonClick,
     handleLikeButtonClick,
-    user_id
+    user_id,
+    owner
   ) {
     this._name = data.name;
     this._link = data.link;
     this._likes = data.likes;
     this._id = data._id;
+    this._owner = data.owner;
     this._selector = cardTemplateSelector;
     this._handleCardClick = handleCardClick;
     this._handleTrashButton = handleTrashButtonClick;
@@ -33,9 +35,20 @@ export class Card {
     this._element.remove();
     this._element = null;
   }
+  isLiked() {
+    if (this._buttonLike.classList.contains("elements__like_active")) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-  _handleLikeClick() {
-    this._buttonLike.classList.toggle("elements__like_active");
+  addActiveLikeState() {
+    this._buttonLike.classList.add("elements__like_active");
+  }
+
+  removeActiveLikeState() {
+    this._buttonLike.classList.remove("elements__like_active");
   }
 
   setLikesInfo(likes) {
@@ -44,14 +57,16 @@ export class Card {
 
   _setEventListeners() {
     this._buttonLike = this._element.querySelector(selectors.like);
-    if (this._id === this._user_id){
-    this._element
-      .querySelector(selectors.trash)
-      .addEventListener("click", () => {
-        this._handleTrashButton();
-      });}
+    if (this._owner._id === this._user_id) {
+      console.log("ура!!!!");
+      console.log(this._element.querySelector(selectors.trash));
+      this._element
+        .querySelector(selectors.trash)
+        .addEventListener("click", () => {
+          this._handleTrashButton();
+        });
+    }
     this._buttonLike.addEventListener("click", () => {
-      this._handleLikeClick();
       this._handleLikeButton();
     });
     this._cardPicture.addEventListener("click", () => {
@@ -70,10 +85,18 @@ export class Card {
     this._counter.textContent = this._likes.length;
     this._cardPicture.alt = this._name;
     this._cardPicture.src = this._link;
-    console.log(this._element);
-    if (this._id !== this._user_id) {
+    if (this._owner._id !== this._user_id) {
+      console.log(this._owner._id);
       this._element.querySelector(selectors.trash).remove();
     }
+    this._likes.forEach((item) => {
+      if (item._id === this._user_id) {
+        this._element
+          .querySelector(selectors.like)
+          .classList.add("elements__like_active");
+      }
+    });
+
     this._setEventListeners();
 
     return this._element;

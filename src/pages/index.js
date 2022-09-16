@@ -3,8 +3,12 @@ import {
   selectors,
   formAddEdit,
   initialCards,
-  addSpinner,
-  removeSpinner,
+  buttonOpenPopupEditProfile,
+  buttonOpenPopupAddCard,
+  formEdit,
+  formAddCard,
+  formAvatar1,
+  buttonOpenPopupAvatar,
 } from "../utils/constants.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/Card.js";
@@ -16,66 +20,60 @@ import { Api } from "../components/Api";
 import { Popup } from "../components/Popup";
 
 let user_id;
-//кнопки открытия попапов
-const buttonOpenPopupEditProfile = document.querySelector(
-  ".profile__open-popup"
-);
-const buttonTrash = document.querySelector(".elements__trash");
-const buttonOpenPopupAddCard = document.querySelector(".profile__button-plus");
-// Находим форму в DOM
-const formEdit = document.querySelector(".popup__form_edit");
-const formAddCard = document.querySelector(".popup__form_plus");
-const formAvatar1 = document.querySelector(".popup__form_avatar");
-const buttonOpenPopupAvatar = document.querySelector(".profile__image");
 
 buttonOpenPopupAvatar.addEventListener("click", () => {
-  classPopupAvatar.openPopup();
+  copyPopupAvatar.openPopup();
 });
 
-const classPopupEdit = new PopupWithForm(".popup-edit", (formData) => {
-  classUserInfo.setUserInfo({
-    name: formData.name,
-    dedication: formData.dedication,
-  });
-  classPopupEdit.closePopup();
+const copyPopupEdit = new PopupWithForm(".popup-edit", (formData) => {
+  api
+    .editProfile(formData.name, formData.dedication)
+    .then((res) => {
+      copyUserInfo.setUserInfo({
+        name: res.name,
+        dedication: res.about,
+      });
+    })
+    .catch((error) => console.log(`Ошибка: ${error}`));
+
+  copyPopupEdit.closePopup();
 });
 
-const classPopupImage = new PopupWithImage(".popup-image");
-const classUserInfo = new UserInfo(
+const copyPopupImage = new PopupWithImage(".popup-image");
+const copyUserInfo = new UserInfo(
   ".profile__title",
   ".profile__subtitle",
   ".profile__image"
 );
-const classPopupAvatar = new PopupWithForm(".popup-avatar", (formData) => {
-  console.log(formData);
+const copyPopupAvatar = new PopupWithForm(".popup-avatar", (formData) => {
   api.changeAvatar(formData).then((res) => {
-    console.log(formData);
-    return classUserInfo.setAvatar(formData.reference);
+    console.log(res);
+    return copyUserInfo.setAvatar(res.avatar);
   });
-  classPopupAvatar.closePopup();
+  copyPopupAvatar.closePopup();
 });
-classPopupAvatar.setEventListeners();
+copyPopupAvatar.setEventListeners();
 
 const formAvatar = new FormValidator(formAddEdit, formAvatar1);
 formAvatar.enableValidation();
 
-classPopupEdit.setEventListeners();
+copyPopupEdit.setEventListeners();
 
-classPopupImage.setEventListeners();
+copyPopupImage.setEventListeners();
 
 buttonOpenPopupEditProfile.addEventListener("click", () => {
-  classPopupEdit.openPopup();
+  copyPopupEdit.openPopup();
 
-  classPopupEdit.setInputValues(classUserInfo.getUserInfo());
+  copyPopupEdit.setInputValues(copyUserInfo.getUserInfo());
 });
 
 export function handleCardClick({ name, link }) {
-  classPopupImage.openPopup({ name, link });
+  copyPopupImage.openPopup({ name, link });
 }
 
-function createCard({ name, link, likes, _id }) {
+function createCard({ name, link, likes, _id, owner }) {
   const card = new Card(
-    { name, link, likes, _id },
+    { name, link, likes, _id, owner},
     selectors.template,
     handleCardClick,
     function handleTrashButtonClick() {
@@ -90,16 +88,19 @@ function createCard({ name, link, likes, _id }) {
         });
     },
     function handleLikeButtonClick() {
-      if (!this._buttonLike.classList.contains("elements__like_active")) {
+      if (card.isLiked()) {
         api.deleteLike(_id).then((res) => {
-          console.log(res.likes);
+          card.removeActiveLikeState();
           return card.setLikesInfo(res.likes);
         });
-      } else
+      } else {
         api.addLike(_id).then((res) => {
+          card.addActiveLikeState();
           return card.setLikesInfo(res.likes);
         });
-    }, user_id
+      }
+    },
+    user_id
   );
 
   const cardElement = card.createCard();
@@ -109,10 +110,10 @@ function createCard({ name, link, likes, _id }) {
 
 const section = new Section(
   {
-    renderer: ({ name, link, likes, _id }) => {
+    renderer: ({ name, link, likes, _id, owner }) => {
       /*if (res.map((item) => item.owner._id) !== "111") {*/
 
-      const cardElement = createCard({ name, link, likes, _id });
+      const cardElement = createCard({ name, link, likes, _id, owner });
       section.addItem(cardElement);
     },
   },
@@ -133,19 +134,18 @@ const api = new Api({
   },
 });
 
-
 /*Подготовка к отрисовке начального состояния: @userData и @InitialCards*/
 const userData = api
   .getUserInfo()
   .then((res) => {
-    const data = classUserInfo.getUserInfo({
+    const data = copyUserInfo.getUserInfo({
       name: res.name,
       dedication: res.dedication,
       avatar: res.avatar,
     });
-    classUserInfo.getUserId(res);
+    copyUserInfo.getUserId(res);
     return {
-      user_id: classUserInfo.getUserId(res),
+      user_id: copyUserInfo.getUserId(res),
       name: data.name,
       dedication: data.dedication,
       avatar: data.avatar,
@@ -153,8 +153,9 @@ const userData = api
   })
   .catch((error) => console.log(`Ошибка: ${error}`));
 const InitialCards = api
-  .getInitialCard().then((res)=>{
-    return res
+  .getInitialCard()
+  .then((res) => {
+    return res;
   })
   .catch((error) => console.log(`Ошибка: ${error}`));
 /*Отрисовка начального состояния через Promise.all*/
@@ -162,51 +163,44 @@ Promise.all([userData, InitialCards])
   .then(([userData, InitialCards]) => {
     user_id = userData.user_id;
     console.log(InitialCards);
-    classUserInfo.setUserInfo({
+    copyUserInfo.setUserInfo({
       name: userData.name,
       dedication: userData.dedication,
     });
-    classUserInfo.setAvatar(userData.avatar);
+    copyUserInfo.setAvatar(userData.avatar);
     /*if (InitialCards.map((item) => item._id) !== user_id)*/
     section.renderInitialItems(InitialCards);
-
   })
   .catch((err) => console.log(err));
 
-api
-  .editProfile("Marie Skłodowska Curie", "ученый")
-  .then((res) => {
-    classUserInfo.setUserInfo({
-      name: res.name,
-      dedication: res.about,
-    });
-  })
-  .catch((error) => console.log(`Ошибка: ${error}`));
-
-const classPopupAddCard = new PopupWithForm(".popup-plus", (formData) => {
+const copyPopupAddCard = new PopupWithForm(".popup-plus", (formData) => {
   api
     .addCard(formData.title, formData.reference, formData.likes, formData._id)
     .then((res) => {
+      console.log(res);
       const cardElement = createCard({
-        name: formData.title,
-        link: formData.reference,
-        likes: [],
-        _id: "6c6ec11c937d29a913374b47",
+        name: res.name,
+        link: res.link,
+        likes: res.likes,
+        _id: res._id,
+        owner:res.owner
       });
+      console.log(cardElement);
       document
         .querySelector(".popup__button-delete")
         .addEventListener("click", () => {
           api.deleteCard(res._id);
         });
 
-      return document.querySelector(selectors.elements).prepend(cardElement);
-    });
-  classPopupAddCard.closePopup();
+      return section.addItem(cardElement);
+    })
+    .catch((err) => console.log(err));
+  copyPopupAddCard.closePopup();
 });
-classPopupAddCard.setEventListeners();
+copyPopupAddCard.setEventListeners();
 
 buttonOpenPopupAddCard.addEventListener("click", function () {
-  classPopupAddCard.openPopup();
+  copyPopupAddCard.openPopup();
   formCard.setDisabledState();
 });
 
