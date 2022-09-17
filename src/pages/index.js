@@ -1,7 +1,7 @@
 import "../pages/index.css";
 import {
   selectors,
-  formAddEdit,
+  validationConfig,
   initialCards,
   buttonOpenPopupEditProfile,
   buttonOpenPopupAddCard,
@@ -9,7 +9,6 @@ import {
   formAddCard,
   formAvatar1,
   buttonOpenPopupAvatar,
-  addSpinner,
 } from "../utils/constants.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/Card.js";
@@ -20,7 +19,7 @@ import { UserInfo } from "../components/UserInfo.js";
 import { Api } from "../components/Api";
 import { Popup } from "../components/Popup";
 import { PopupSubmit } from "../components/PopupWithFormSubmit";
-
+import { addSpinner, removeSpinner } from "../utils/constants";
 let user_id;
 
 buttonOpenPopupAvatar.addEventListener("click", () => {
@@ -28,6 +27,7 @@ buttonOpenPopupAvatar.addEventListener("click", () => {
 });
 
 const copyPopupEdit = new PopupWithForm(".popup-edit", (formData) => {
+  addSpinner(document.querySelector(".popup__button-save"));
   api
     .editProfile(formData.name, formData.dedication)
     .then((res) => {
@@ -36,7 +36,10 @@ const copyPopupEdit = new PopupWithForm(".popup-edit", (formData) => {
         dedication: res.about,
       });
     })
-    .catch((error) => console.log(`Ошибка: ${error}`));
+    .catch((error) => console.log(`Ошибка: ${error}`))
+    .finally(() => {
+      removeSpinner(document.querySelector(".popup__button-save"));
+    });
 
   copyPopupEdit.closePopup();
 });
@@ -54,7 +57,10 @@ const copyPopupAvatar = new PopupWithForm(".popup-avatar", (formData) => {
     .then((res) => {
       return copyUserInfo.setAvatar(res.avatar);
     })
-    .catch((error) => console.log(`Ошибка: ${error}`));
+    .catch((error) => console.log(`Ошибка: ${error}`))
+    .finally(() => {
+      removeSpinner(document.querySelector(".popup__button-save"));
+    });
   copyPopupAvatar.closePopup();
 });
 copyPopupAvatar.setEventListeners();
@@ -66,7 +72,7 @@ const PopupDelete = new PopupSubmit(".popup-delete", function deleteSubmit(
 });
 PopupDelete.setEventListeners();
 
-const formAvatar = new FormValidator(formAddEdit, formAvatar1);
+const formAvatar = new FormValidator(validationConfig, formAvatar1);
 formAvatar.enableValidation();
 
 copyPopupEdit.setEventListeners();
@@ -137,10 +143,10 @@ const section = new Section(
   selectors.elements
 );
 
-const formProfile = new FormValidator(formAddEdit, formEdit);
+const formProfile = new FormValidator(validationConfig, formEdit);
 formProfile.enableValidation();
 
-const formCard = new FormValidator(formAddEdit, formAddCard);
+const formCard = new FormValidator(validationConfig, formAddCard);
 formCard.enableValidation();
 
 const api = new Api({
@@ -179,7 +185,7 @@ const InitialCards = api
 Promise.all([userData, InitialCards])
   .then(([userData, InitialCards]) => {
     user_id = userData.user_id;
-    console.log(InitialCards);
+
     copyUserInfo.setUserInfo({
       name: userData.name,
       dedication: userData.dedication,
@@ -191,10 +197,12 @@ Promise.all([userData, InitialCards])
   .catch((err) => console.log(err));
 
 const copyPopupAddCard = new PopupWithForm(".popup-plus", (formData) => {
+  addSpinner(document.querySelector(".popup__button-save"));
+
   api
     .addCard(formData.title, formData.reference, formData.likes, formData._id)
     .then((res) => {
-      console.log(res);
+
       const cardElement = createCard({
         name: res.name,
         link: res.link,
@@ -209,7 +217,9 @@ const copyPopupAddCard = new PopupWithForm(".popup-plus", (formData) => {
         });
       return section.addItem(cardElement);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err)).finally(()=>{
+      removeSpinner(document.querySelector(".popup__button-save"));
+    });
   copyPopupAddCard.closePopup();
 });
 copyPopupAddCard.setEventListeners();

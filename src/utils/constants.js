@@ -7,7 +7,7 @@ const buttonOpenPopupAddCard = document.querySelector(".profile__button-plus");
 const formEdit = document.querySelector(".popup__form_edit");
 const formAddCard = document.querySelector(".popup__form_plus");
 const formAvatar1 = document.querySelector(".popup__form_avatar");
-const buttonOpenPopupAvatar = document.querySelector(".profile__image");
+const buttonOpenPopupAvatar = document.querySelector(".profile__change");
 
 const selectors = {
   inputTitle: ".popup__input_type_title",
@@ -23,7 +23,7 @@ const selectors = {
   popup__caption: ".popup__caption",
 };
 
-const formAddEdit = {
+const validationConfig = {
   button: ".popup__button-save",
   inactiveButton: "popup__button-save_disabled",
   activeButton: "popup__button-save_abled",
@@ -59,7 +59,7 @@ const initialCards = [
 
 export {
   selectors,
-  formAddEdit,
+  validationConfig,
   initialCards,
   buttonOpenPopupEditProfile,
   buttonOpenPopupAddCard,
