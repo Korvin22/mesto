@@ -31,7 +31,6 @@ export class Card {
     return cardElement;
   }
   _removeCard() {
-    console.log(this._element);
     this._element.remove();
     this._element = null;
   }
@@ -58,8 +57,6 @@ export class Card {
   _setEventListeners() {
     this._buttonLike = this._element.querySelector(selectors.like);
     if (this._owner._id === this._user_id) {
-      console.log("ура!!!!");
-      console.log(this._element.querySelector(selectors.trash));
       this._element
         .querySelector(selectors.trash)
         .addEventListener("click", () => {
@@ -86,7 +83,6 @@ export class Card {
     this._cardPicture.alt = this._name;
     this._cardPicture.src = this._link;
     if (this._owner._id !== this._user_id) {
-      console.log(this._owner._id);
       this._element.querySelector(selectors.trash).remove();
     }
     this._likes.forEach((item) => {

@@ -1,13 +1,18 @@
-import { PopupWithForm } from "./PopupWithForm.js";
+import { Popup } from "./Popup.js";
 
-export class PopupWithFormSubmit extends PopupWithForm {
-constructor(popupSelector, handleFormSubmit) {
-super(popupSelector, handleFormSubmit);
-
+export class PopupSubmit extends Popup {
+constructor(popupSelector, deleteCard) {
+super(popupSelector);
+this._deleteCard = deleteCard;
 }
 
 setEventListeners() {
+  super.setEventListeners();
 
+}
+
+closePopup() {
+  super.closePopup()
 }
 
 

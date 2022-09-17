@@ -9,6 +9,7 @@ import {
   formAddCard,
   formAvatar1,
   buttonOpenPopupAvatar,
+  addSpinner,
 } from "../utils/constants.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/Card.js";
@@ -18,6 +19,7 @@ import { PopupWithForm } from "../components/PopupWithForm.js";
 import { UserInfo } from "../components/UserInfo.js";
 import { Api } from "../components/Api";
 import { Popup } from "../components/Popup";
+import { PopupSubmit } from "../components/PopupWithFormSubmit";
 
 let user_id;
 
@@ -46,13 +48,23 @@ const copyUserInfo = new UserInfo(
   ".profile__image"
 );
 const copyPopupAvatar = new PopupWithForm(".popup-avatar", (formData) => {
-  api.changeAvatar(formData).then((res) => {
-    console.log(res);
-    return copyUserInfo.setAvatar(res.avatar);
-  });
+  addSpinner(document.querySelector(".popup__button-save"));
+  api
+    .changeAvatar(formData)
+    .then((res) => {
+      return copyUserInfo.setAvatar(res.avatar);
+    })
+    .catch((error) => console.log(`Ошибка: ${error}`));
   copyPopupAvatar.closePopup();
 });
 copyPopupAvatar.setEventListeners();
+
+const PopupDelete = new PopupSubmit(".popup-delete", function deleteSubmit(
+  _id
+) {
+  api.deleteCard(_id);
+});
+PopupDelete.setEventListeners();
 
 const formAvatar = new FormValidator(formAddEdit, formAvatar1);
 formAvatar.enableValidation();
@@ -73,31 +85,36 @@ export function handleCardClick({ name, link }) {
 
 function createCard({ name, link, likes, _id, owner }) {
   const card = new Card(
-    { name, link, likes, _id, owner},
+    { name, link, likes, _id, owner },
     selectors.template,
     handleCardClick,
     function handleTrashButtonClick() {
-      const classPopupDelete = new Popup(".popup-delete");
-      classPopupDelete.setEventListeners();
-      classPopupDelete.openPopup();
+      PopupDelete.openPopup();
       document
         .querySelector(".popup__button-delete")
         .addEventListener("click", () => {
-          this._element.remove();
-          classPopupDelete.closePopup();
+          api.deleteCard(_id);
+          card._removeCard();
+          PopupDelete.closePopup();
         });
     },
     function handleLikeButtonClick() {
       if (card.isLiked()) {
-        api.deleteLike(_id).then((res) => {
-          card.removeActiveLikeState();
-          return card.setLikesInfo(res.likes);
-        });
+        api
+          .deleteLike(_id)
+          .then((res) => {
+            card.removeActiveLikeState();
+            return card.setLikesInfo(res.likes);
+          })
+          .catch((error) => console.log(`Ошибка: ${error}`));
       } else {
-        api.addLike(_id).then((res) => {
-          card.addActiveLikeState();
-          return card.setLikesInfo(res.likes);
-        });
+        api
+          .addLike(_id)
+          .then((res) => {
+            card.addActiveLikeState();
+            return card.setLikesInfo(res.likes);
+          })
+          .catch((error) => console.log(`Ошибка: ${error}`));
       }
     },
     user_id
@@ -183,15 +200,13 @@ const copyPopupAddCard = new PopupWithForm(".popup-plus", (formData) => {
         link: res.link,
         likes: res.likes,
         _id: res._id,
-        owner:res.owner
+        owner: res.owner,
       });
-      console.log(cardElement);
       document
         .querySelector(".popup__button-delete")
         .addEventListener("click", () => {
           api.deleteCard(res._id);
         });
-
       return section.addItem(cardElement);
     })
     .catch((err) => console.log(err));
@@ -203,11 +218,3 @@ buttonOpenPopupAddCard.addEventListener("click", function () {
   copyPopupAddCard.openPopup();
   formCard.setDisabledState();
 });
-
-/*const popupEditAvatar = new PopupWithForm(popupAvatar,(dataInputs) => {
-  api.changeAvatar(dataInputs)
-  .then((data) => {
-    user.setUserInfo({avatar: data.avatar, name: data.name, description: data.about});
-  })
-  })
-popupEditAvatar.setEventListeners();*/
