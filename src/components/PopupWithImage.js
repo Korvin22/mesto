@@ -6,14 +6,11 @@ export class PopupWithImage extends Popup {
     super(popupSelector);
     this.popupPicture = this.popup.querySelector(selectors.popup__picture);
     this.popupCaption = this.popup.querySelector(selectors.popup__caption);
-
   }
-  openPopup ({name,link}) {
-
+  openPopup({ name, link }) {
     this.popupCaption.textContent = name;
     this.popupPicture.alt = name;
     this.popupPicture.src = link;
     super.openPopup();
-
   }
 }

@@ -10,6 +10,8 @@
   border: none;
   outline: none;
   background-size: contain;
+
+  transition: all .2s linear;
 }
 
 .popup__button-close:hover {

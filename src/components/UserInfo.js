@@ -12,12 +12,8 @@ export class UserInfo {
     return {
       name: this.profileTitle.textContent,
       dedication: this.profileSubtitle.textContent,
-      avatar: this.profileAvatar.src
+      avatar: this.profileAvatar.src,
     };
-  }
-
-  getUserId(data) {
-    return data._id
   }
 
   setUserInfo({ name, dedication }) {

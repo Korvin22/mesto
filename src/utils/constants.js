@@ -69,10 +69,12 @@ export {
   buttonOpenPopupAvatar,
 };
 
-export function addSpinner(elem) {
-  elem.textContent = "Сохранение...";
+export function addSpinner(popup) {
+  const button = popup.querySelector(".popup__button-save");
+  button.textContent = "Сохранение...";
 }
 
-export function removeSpinner(elem) {
-  elem.textContent = "Сохранить";
+export function removeSpinner(popup) {
+  const button = popup.querySelector(".popup__button-save");
+  button.textContent = "Сохранить";
 }

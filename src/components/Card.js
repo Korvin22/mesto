@@ -7,30 +7,30 @@ export class Card {
     handleCardClick,
     handleTrashButtonClick,
     handleLikeButtonClick,
-    user_id,
+    userId,
     owner
   ) {
     this._name = data.name;
     this._link = data.link;
     this._likes = data.likes;
-    this._id = data._id;
+    this._id = data.cardId;
     this._owner = data.owner;
-    this._selector = cardTemplateSelector;
+    this._cardTemplateSelector = cardTemplateSelector;
     this._handleCardClick = handleCardClick;
     this._handleTrashButton = handleTrashButtonClick;
     this._handleLikeButton = handleLikeButtonClick;
-    this._user_id = user_id;
+    this._userId = userId;
   }
 
   _getTemplate() {
     const cardElement = document
-      .querySelector(this._selector)
+      .querySelector(this._cardTemplateSelector)
       .content.querySelector(selectors.element)
       .cloneNode(true);
 
     return cardElement;
   }
-  _removeCard() {
+  removeCard() {
     this._element.remove();
     this._element = null;
   }
@@ -56,7 +56,7 @@ export class Card {
 
   _setEventListeners() {
     this._buttonLike = this._element.querySelector(selectors.like);
-    if (this._owner._id === this._user_id) {
+    if (this._owner._id === this._userId) {
       this._element
         .querySelector(selectors.trash)
         .addEventListener("click", () => {
@@ -82,11 +82,11 @@ export class Card {
     this._counter.textContent = this._likes.length;
     this._cardPicture.alt = this._name;
     this._cardPicture.src = this._link;
-    if (this._owner._id !== this._user_id) {
+    if (this._owner._id !== this._userId) {
       this._element.querySelector(selectors.trash).remove();
     }
-    this._likes.forEach((item) => {
-      if (item._id === this._user_id) {
+    this._likes.find((likesData) => {
+      if (likesData._id === this._userId) {
         this._element
           .querySelector(selectors.like)
           .classList.add("elements__like_active");
