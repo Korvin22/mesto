@@ -1,7 +1,6 @@
-window.onload = function() {
-  console.log(document.querySelector('.page'))
-  document.querySelector('.page').classList.remove("page_preload");
-  };
+window.onload = function () {
+  document.querySelector(".page").classList.remove("page_preload");
+};
 
 import "../pages/index.css";
 import {
@@ -25,10 +24,6 @@ import { Popup } from "../components/Popup";
 import { PopupSubmit } from "../components/PopupWithFormSubmit";
 import { addSpinner, removeSpinner } from "../utils/constants";
 let userId;
-
-buttonOpenPopupAvatar.addEventListener("click", () => {
-  popupAvatarElement.openPopup();
-});
 
 const popupEditElement = new PopupWithForm(".popup-edit", (formData) => {
   addSpinner(document.querySelector(".popup-edit"));
@@ -66,23 +61,10 @@ const popupAvatarElement = new PopupWithForm(".popup-avatar", (formData) => {
       removeSpinner(document.querySelector(".popup-avatar"));
     });
 });
-popupAvatarElement.setEventListeners();
 
 const popupDelete = new PopupSubmit(".popup-delete");
-popupDelete.setEventListeners();
 
 const avatarFormValidator = new FormValidator(validationConfig, formAvatar1);
-avatarFormValidator.enableValidation();
-
-popupEditElement.setEventListeners();
-
-popupImageElement.setEventListeners();
-
-buttonOpenPopupEditProfile.addEventListener("click", () => {
-  popupEditElement.openPopup();
-
-  popupEditElement.setInputValues(userInfoElement.getUserInfo());
-});
 
 export function handleCardClick({ name, link }) {
   popupImageElement.openPopup({ name, link });
@@ -208,11 +190,27 @@ const popupAddCardElement = new PopupWithForm(".popup-plus", (formData) => {
     .finally(() => {
       removeSpinner(document.querySelector(".popup-plus"));
     });
-
 });
 popupAddCardElement.setEventListeners();
 
 buttonOpenPopupAddCard.addEventListener("click", function () {
   popupAddCardElement.openPopup();
   cardFormValidator.setDisabledState();
+});
+buttonOpenPopupAvatar.addEventListener("click", () => {
+  popupAvatarElement.openPopup();
+});
+
+popupAvatarElement.setEventListeners();
+popupDelete.setEventListeners();
+avatarFormValidator.enableValidation();
+
+popupEditElement.setEventListeners();
+
+popupImageElement.setEventListeners();
+
+buttonOpenPopupEditProfile.addEventListener("click", () => {
+  popupEditElement.openPopup();
+
+  popupEditElement.setInputValues(userInfoElement.getUserInfo());
 });

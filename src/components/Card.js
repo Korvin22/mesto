@@ -35,11 +35,7 @@ export class Card {
     this._element = null;
   }
   isLiked() {
-    if (this._buttonLike.classList.contains("elements__like_active")) {
-      return true;
-    } else {
-      return false;
-    }
+    return this._buttonLike.classList.contains("elements__like_active")
   }
 
   addActiveLikeState() {

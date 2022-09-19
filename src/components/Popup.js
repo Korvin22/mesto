@@ -5,11 +5,15 @@ export class Popup {
   }
   openPopup() {
     this.popup.classList.add("popup_opened");
+    this.popup.classList.remove("popup_closed");
     document.addEventListener("keydown", this._handleEscClose);
   }
 
   closePopup() {
     this.popup.classList.remove("popup_opened");
+    this.popup.classList.add("popup_closed");
+
+
     document.removeEventListener("keydown", this._handleEscClose);
   }
 
