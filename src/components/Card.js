@@ -85,8 +85,8 @@ export class Card {
     if (this._owner._id !== this._userId) {
       this._element.querySelector(selectors.trash).remove();
     }
-    this._likes.find((likesData) => {
-      if (likesData._id === this._userId) {
+    this._likes.find((likeData) => {
+      if (likeData._id === this._userId) {
         this._element
           .querySelector(selectors.like)
           .classList.add("elements__like_active");

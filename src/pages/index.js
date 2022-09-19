@@ -1,8 +1,12 @@
+window.onload = function() {
+  console.log(document.querySelector('.page'))
+  document.querySelector('.page').classList.remove("page_preload");
+  };
+
 import "../pages/index.css";
 import {
   selectors,
   validationConfig,
-  initialCards,
   buttonOpenPopupEditProfile,
   buttonOpenPopupAddCard,
   formEdit,
@@ -91,7 +95,7 @@ function createCard({ name, link, likes, _id, owner }) {
     handleCardClick,
     function handleTrashButtonClick() {
       popupDelete.openPopup();
-      popupDelete.submitHandler(() => {
+      popupDelete.setsubmitHandler(() => {
         api
           .deleteCard(_id)
           .then((res) => {
@@ -134,7 +138,7 @@ const section = new Section(
   {
     renderer: ({ name, link, likes, _id, owner }) => {
       const cardElement = createCard({ name, link, likes, _id, owner });
-      section.addItemInitial(cardElement);
+      section.appendItem(cardElement);
     },
   },
   selectors.elements
@@ -154,7 +158,7 @@ const api = new Api({
   },
 });
 
-/*Подготовка к отрисовке начального состояния: @userData и @InitialCards*/
+/*Подготовка к отрисовке начального состояния: @userData и @initialCards*/
 const userData = api.getUserInfo().then((res) => {
   return {
     userId: res._id,
@@ -164,13 +168,13 @@ const userData = api.getUserInfo().then((res) => {
   };
 });
 
-const InitialCards = api.getInitialCard().then((res) => {
+const initialCards = api.getInitialCard().then((res) => {
   return res;
 });
 
 /*Отрисовка начального состояния через Promise.all*/
-Promise.all([userData, InitialCards])
-  .then(([userData, InitialCards]) => {
+Promise.all([userData, initialCards])
+  .then(([userData, initialCards]) => {
     userId = userData.userId;
 
     userInfoElement.setUserInfo({
@@ -178,8 +182,8 @@ Promise.all([userData, InitialCards])
       dedication: userData.dedication,
     });
     userInfoElement.setAvatar(userData.avatar);
-    /*if (InitialCards.map((item) => item._id) !== userId)*/
-    section.renderInitialItems(InitialCards);
+
+    section.renderInitialItems(initialCards);
   })
   .catch((err) => console.log(err));
 
@@ -196,15 +200,15 @@ const popupAddCardElement = new PopupWithForm(".popup-plus", (formData) => {
         _id: res._id,
         owner: res.owner,
       });
-      document;
 
-      return section.addItem(cardElement);
+      popupAddCardElement.closePopup();
+      return section.prependItem(cardElement);
     })
     .catch((err) => console.log(err))
     .finally(() => {
       removeSpinner(document.querySelector(".popup-plus"));
     });
-  popupAddCardElement.closePopup();
+
 });
 popupAddCardElement.setEventListeners();
 

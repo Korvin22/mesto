@@ -30,7 +30,7 @@ const validationConfig = {
   input: "popup__input",
 };
 
-const initialCards = [
+const initialCardsLocal = [
   {
     name: "Архыз",
     link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
@@ -60,7 +60,6 @@ const initialCards = [
 export {
   selectors,
   validationConfig,
-  initialCards,
   buttonOpenPopupEditProfile,
   buttonOpenPopupAddCard,
   formEdit,

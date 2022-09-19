@@ -6,7 +6,7 @@ export class PopupSubmit extends Popup {
     this._confirmButton = this.popup.querySelector(".popup__button-delete");
   }
 
-  submitHandler(submitAction) {
+  setsubmitHandler(submitAction) {
     this._handleSubmit = submitAction;
   }
 
@@ -19,7 +19,5 @@ export class PopupSubmit extends Popup {
     });
   }
 
-  closePopup() {
-    super.closePopup();
-  }
+
 }
